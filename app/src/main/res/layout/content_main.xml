@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainActivity"
+    tools:showIn="@layout/app_bar_main"
+    android:id="@+id/fragmentContainer">
+
+    <TextView
+        android:id="@+id/labelBuscar"
+        android:layout_width="116dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/buscar"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/buttonGame"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="24dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelBuscar"
+        app:srcCompat="@drawable/ic_videogame_asset_black_24dp"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/buttonPlatform"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="24dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toEndOf="@+id/buttonGame"
+        app:layout_constraintTop_toBottomOf="@+id/labelBuscar"
+        app:srcCompat="@drawable/ic_desktop_windows_black_24dp"
+        tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/labelPerfil"
+        android:layout_width="123dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="44dp"
+        android:text="@string/perfil"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonGame"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/buttonUser"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginTop="24dp"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelPerfil"
+        app:srcCompat="@drawable/ic_person_black_24dp"
+        tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/labelNumJuegos"
+        android:layout_width="71dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="28dp"
+        android:text="@string/num_total_de_juegos"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/buttonUser"
+        app:layout_constraintTop_toBottomOf="@+id/labelPerfil" />
+
+    <TextView
+        android:id="@+id/txtNumJuegos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="40dp"
+        android:text="17"
+        app:layout_constraintStart_toEndOf="@+id/labelNumJuegos"
+        app:layout_constraintTop_toBottomOf="@+id/labelPerfil" />
+
+    <TextView
+        android:id="@+id/labelDineroGastado"
+        android:layout_width="72dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/dinero_gastado"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/buttonUser"
+        app:layout_constraintTop_toBottomOf="@+id/labelNumJuegos" />
+
+    <TextView
+        android:id="@+id/txtDineroGastado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="100€"
+        app:layout_constraintStart_toEndOf="@+id/labelDineroGastado"
+        app:layout_constraintTop_toBottomOf="@+id/txtNumJuegos" />
+
+</android.support.constraint.ConstraintLayout>
