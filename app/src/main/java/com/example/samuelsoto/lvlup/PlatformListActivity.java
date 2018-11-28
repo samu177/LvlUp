@@ -3,6 +3,7 @@ package com.example.samuelsoto.lvlup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -36,6 +39,7 @@ public class PlatformListActivity extends AppCompatActivity
     private int count = 0;
     private ArrayList<Platform> platforms = new ArrayList<>();
     private ArrayAdapter<Platform> adapter;
+    private ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,19 @@ public class PlatformListActivity extends AppCompatActivity
         apiSetup();
         getGames();
 
+        list.setClickable(true);
+        list.setOnItemClickListener(    new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+                Log.i("Click", "click en el elemento " + position);
+
+                Intent intent = new Intent(view.getContext(),platformDetail.class);
+                intent.putExtra("ID", platforms.get(position).getId());
+                startActivity(intent);
+
+            }
+        });
 
     }
 
@@ -117,7 +134,7 @@ public class PlatformListActivity extends AppCompatActivity
             });
         }
         adapter = new platformArrayAdapter(getApplicationContext(),0,platforms);
-        ListView list = (ListView) findViewById(R.id.platformList);
+        list = (ListView) findViewById(R.id.platformList);
         list.setAdapter(adapter);
         Log.d(PlatformListActivity.class.getSimpleName(), String.valueOf(count));
     }

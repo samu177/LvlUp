@@ -15,7 +15,8 @@
         android:paddingTop="5dp"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/imgPlatform"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="#000000"/>
 
     <ImageView
         android:id="@+id/imgPlatform"
