@@ -15,7 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.samuelsoto.lvlup.Classes.Platform;
 
@@ -24,6 +26,7 @@ import com.igdb.api_android_java.callback.OnSuccessCallback;
 import com.igdb.api_android_java.wrapper.IGDBWrapper;
 import com.igdb.api_android_java.wrapper.Parameters;
 import com.igdb.api_android_java.wrapper.Version;
+import com.igdb.api_android_java.wrapper.Endpoint;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,6 +77,63 @@ public class PlatformListActivity extends AppCompatActivity
             }
         });
 
+        Button buscar = (Button) findViewById(R.id.searchButtonPlatform);
+
+        buscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                TextView busquedaView = (TextView) findViewById(R.id.searchPlatform);
+                final String busqueda = busquedaView.getText().toString();
+                Log.d("Busqueda:",busqueda);
+                buscar(busqueda);
+            }
+        });
+
+
+
+    }
+
+    public void buscar(String busqueda){
+        Log.d(PlatformListActivity.class.getSimpleName(),busqueda);
+        platforms.clear();
+        Parameters params = new Parameters()
+                .addSearch(busqueda)
+                .addFields("id,name")
+                .addOrder("name");
+
+        wrapper.search(Endpoint.PLATFORMS, params, new OnSuccessCallback(){
+            @Override
+            public void onSuccess(JSONArray result) {
+                for (int i = 0; i < result.length(); i++) {
+                    JSONObject json_data = null;
+                    try {
+                        json_data = result.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        Platform p = new Platform(String.valueOf(json_data.getInt("id")), String.valueOf(json_data.getString("name")));
+                        platforms.add(p);
+                        count++;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                adapter = new platformArrayAdapter(getApplicationContext(),0,platforms);
+                list = (ListView) findViewById(R.id.platformList);
+                list.setAdapter(adapter);
+                Log.d(PlatformListActivity.class.getSimpleName(), String.valueOf(count));
+
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                Log.e("Volly Error", error.toString());
+            }
+        });
     }
 
     public void apiSetup() {
@@ -107,7 +167,6 @@ public class PlatformListActivity extends AppCompatActivity
             wrapper.platforms(params, new OnSuccessCallback() {
                 @Override
                 public void onSuccess(JSONArray result) {
-
 
                     for (int i = 0; i < result.length(); i++) {
                         JSONObject json_data = null;
@@ -149,8 +208,6 @@ public class PlatformListActivity extends AppCompatActivity
         }
     }
 
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
