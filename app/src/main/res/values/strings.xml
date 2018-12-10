@@ -14,5 +14,6 @@
     <string name="title_activity_game">LvlUp</string>
     <string name="title_activity_platform_detail">platformDetail</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="title_activity_game_detail">GameDetail</string>
 
 </resources>

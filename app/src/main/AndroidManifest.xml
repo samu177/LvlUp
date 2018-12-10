@@ -25,10 +25,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UserActivity"
-            android:label="@string/title_activity_user"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".PlatformListActivity"
             android:label="@string/title_activity_platform"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -37,9 +33,13 @@
             android:label="@string/title_activity_game"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".platformDetail"
+            android:name=".PlatformDetail"
             android:label="@string/title_activity_platform_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".GameDetail"
+            android:label="@string/title_activity_game_detail"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

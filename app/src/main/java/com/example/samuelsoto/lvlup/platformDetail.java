@@ -27,7 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class platformDetail extends AppCompatActivity
+public class PlatformDetail extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
@@ -112,10 +112,7 @@ public class platformDetail extends AppCompatActivity
         } else if (id == R.id.nav_platforms) {
             Intent intent = new Intent(this, PlatformListActivity.class);
             this.startActivity(intent);
-        } else if (id == R.id.nav_profile) {
-            Intent intent = new Intent(this, UserActivity.class);
-            this.startActivity(intent);
-        } else if (id == R.id.nav_update) {
+        }  else if (id == R.id.nav_update) {
 
         } else if (id == R.id.nav_options) {
 

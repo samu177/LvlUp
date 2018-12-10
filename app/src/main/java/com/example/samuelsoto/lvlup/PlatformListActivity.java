@@ -3,7 +3,6 @@ package com.example.samuelsoto.lvlup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -70,7 +69,7 @@ public class PlatformListActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
                 Log.i("Click", "click en el elemento " + position);
 
-                Intent intent = new Intent(view.getContext(),platformDetail.class);
+                Intent intent = new Intent(view.getContext(),PlatformDetail.class);
                 intent.putExtra("ID", platforms.get(position).getId());
                 startActivity(intent);
 
@@ -122,7 +121,7 @@ public class PlatformListActivity extends AppCompatActivity
                     }
                 }
 
-                adapter = new platformArrayAdapter(getApplicationContext(),0,platforms);
+                adapter = new PlatformArrayAdapter(getApplicationContext(),0,platforms);
                 list = (ListView) findViewById(R.id.platformList);
                 list.setAdapter(adapter);
                 Log.d(PlatformListActivity.class.getSimpleName(), String.valueOf(count));
@@ -142,7 +141,7 @@ public class PlatformListActivity extends AppCompatActivity
     }
 
     public void getGames() {
-        for(int i=0; i<3; i++) {
+        for(int i=0; i<4; i++) {
             Parameters params = null;
             if (i == 0) {
                 params = new Parameters()
@@ -153,15 +152,22 @@ public class PlatformListActivity extends AppCompatActivity
                 params = new Parameters()
                         .addFields("id,name")
                         .addLimit("50")
-                        .addOffset("51")
+                        .addOffset("50")
                         .addOrder("name");
             } else if (i == 2) {
                 params = new Parameters()
                         .addFields("id,name")
                         .addLimit("50")
-                        .addOffset("104")
+                        .addOffset("100")
+                        .addOrder("name");
+            } else if (i == 3) {
+                params = new Parameters()
+                        .addFields("id,name")
+                        .addLimit("50")
+                        .addOffset("150")
                         .addOrder("name");
             }
+
 
 
             wrapper.platforms(params, new OnSuccessCallback() {
@@ -192,7 +198,7 @@ public class PlatformListActivity extends AppCompatActivity
                 }
             });
         }
-        adapter = new platformArrayAdapter(getApplicationContext(),0,platforms);
+        adapter = new PlatformArrayAdapter(getApplicationContext(),0,platforms);
         list = (ListView) findViewById(R.id.platformList);
         list.setAdapter(adapter);
         Log.d(PlatformListActivity.class.getSimpleName(), String.valueOf(count));
@@ -222,9 +228,6 @@ public class PlatformListActivity extends AppCompatActivity
             this.startActivity(intent);
         } else if (id == R.id.nav_platforms) {
             Intent intent = new Intent(this, PlatformListActivity.class);
-            this.startActivity(intent);
-        } else if (id == R.id.nav_profile) {
-            Intent intent = new Intent(this, UserActivity.class);
             this.startActivity(intent);
         } else if (id == R.id.nav_update) {
 

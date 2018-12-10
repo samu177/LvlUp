@@ -2,6 +2,9 @@ package com.example.samuelsoto.lvlup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -9,16 +12,27 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity
+import com.android.volley.VolleyError;
+import com.igdb.api_android_java.callback.OnSuccessCallback;
+import com.igdb.api_android_java.wrapper.IGDBWrapper;
+import com.igdb.api_android_java.wrapper.Parameters;
+import com.igdb.api_android_java.wrapper.Version;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class GameDetail extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_game_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -31,29 +45,42 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ImageButton btnUsr = (ImageButton) findViewById(R.id.buttonUser);
-        btnUsr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        Intent mIntent = getIntent();
+        String id = mIntent.getStringExtra("ID");
 
+        Log.d("ID:","La id es:" + id);
+
+        IGDBWrapper wrapper = new IGDBWrapper(this, "4661abeeaff372aa70b98588332b3b99", Version.STANDARD, false);
+
+        Parameters params = new Parameters()
+                .addIds(id)
+                .addFields("name,url");
+
+        wrapper.games(params, new OnSuccessCallback(){
+            @Override
+            public void onSuccess(JSONArray result) {
+
+                JSONObject json_data = null;
+                try {
+                    json_data = result.getJSONObject(0);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                TextView name = (TextView) findViewById(R.id.gameName);
+                TextView url = (TextView) findViewById(R.id.gameUrl);
+
+                try {
+                    name.setText(String.valueOf(json_data.getString("name")));
+                    url.setText(String.valueOf(json_data.getString("url")));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
-        });
 
-        ImageButton btnPlat = (ImageButton) findViewById(R.id.buttonPlatform);
-        btnPlat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), PlatformListActivity.class);
-                startActivityForResult(intent, 0);
-            }
-        });
-
-        ImageButton btnGame = (ImageButton) findViewById(R.id.buttonGame);
-        btnGame.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), GameListActivity.class);
-                startActivityForResult(intent, 0);
+            public void onError(VolleyError error) {
+                // Do something on error
             }
         });
     }
@@ -67,7 +94,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -95,5 +121,4 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }
