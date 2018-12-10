@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity
         btnUsr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(v.getContext(), UserActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -84,6 +85,9 @@ public class MainActivity extends AppCompatActivity
             this.startActivity(intent);
         } else if (id == R.id.nav_platforms) {
             Intent intent = new Intent(this, PlatformListActivity.class);
+            this.startActivity(intent);
+        } else if (id == R.id.nav_profile) {
+            Intent intent = new Intent(this, UserActivity.class);
             this.startActivity(intent);
         } else if (id == R.id.nav_update) {
 

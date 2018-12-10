@@ -20,13 +20,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-class PlatformArrayAdapter extends ArrayAdapter<Platform> {
+class platformArrayAdapter extends ArrayAdapter<Platform> {
 
     private Context context;
     private List<Platform> platformProperties;
 
     //constructor, call on creation
-    public PlatformArrayAdapter(Context context, int resource, ArrayList<Platform> objects) {
+    public platformArrayAdapter(Context context, int resource, ArrayList<Platform> objects) {
         super(context, resource, objects);
 
         this.context = context;
