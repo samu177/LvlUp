@@ -141,33 +141,24 @@ public class GameListActivity extends AppCompatActivity
     }
 
     public void getGames() {
-        for(int i=0; i<4; i++) {
+        int offset=50;
+        for(int i=0; i<90; i++) {
             Parameters params = null;
             if (i == 0) {
                 params = new Parameters()
+                        .addFilter("[release_dates.platform][any]=49,48,130")
                         .addFields("id,name")
                         .addLimit("50")
                         .addOrder("name");
-            } else if (i == 1) {
+            }else{
                 params = new Parameters()
+                        .addFilter("[release_dates.platform][any]=49,48,130")
                         .addFields("id,name")
                         .addLimit("50")
-                        .addOffset("50")
-                        .addOrder("name");
-            } else if (i == 2) {
-                params = new Parameters()
-                        .addFields("id,name")
-                        .addLimit("50")
-                        .addOffset("100")
-                        .addOrder("name");
-            } else if (i == 3) {
-                params = new Parameters()
-                        .addFields("id,name")
-                        .addLimit("50")
-                        .addOffset("150")
+                        .addOffset(String.valueOf(offset))
                         .addOrder("name");
             }
-
+            offset=offset+50;
 
 
             wrapper.games(params, new OnSuccessCallback() {

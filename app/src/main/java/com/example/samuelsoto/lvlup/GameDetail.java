@@ -54,7 +54,7 @@ public class GameDetail extends AppCompatActivity
 
         Parameters params = new Parameters()
                 .addIds(id)
-                .addFields("name,url");
+                .addFields("name,platforms");
 
         wrapper.games(params, new OnSuccessCallback(){
             @Override

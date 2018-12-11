@@ -141,32 +141,40 @@ public class PlatformListActivity extends AppCompatActivity
     }
 
     public void getGames() {
-        for(int i=0; i<4; i++) {
-            Parameters params = null;
-            if (i == 0) {
-                params = new Parameters()
+//        for(int i=0; i<4; i++) {
+//            Parameters params = null;
+//            if (i == 0) {
+//                params = new Parameters()
+//                        .addFields("id,name")
+//                        .addLimit("6")
+//                        .addOrder("name");
+//            } else if (i == 1) {
+//                params = new Parameters()
+//                        .addFields("id,name")
+//                        .addLimit("50")
+//                        .addOffset("50")
+//                        .addOrder("name");
+//            } else if (i == 2) {
+//                params = new Parameters()
+//                        .addFields("id,name")
+//                        .addLimit("50")
+//                        .addOffset("100")
+//                        .addOrder("name");
+//            } else if (i == 3) {
+//                params = new Parameters()
+//                        .addFields("id,name")
+//                        .addLimit("50")
+//                        .addOffset("150")
+//                        .addOrder("name");
+//            } Xbox360 - 12  Xboxone - 49  Playstation3 - 9  Playstation4 - 48  Nintendo3DS - 37   NintendoSwitch - 130  PC - 6
+
+        Parameters params = null;
+
+        params = new Parameters()
+                        .addIds("49,48,130")
                         .addFields("id,name")
                         .addLimit("50")
                         .addOrder("name");
-            } else if (i == 1) {
-                params = new Parameters()
-                        .addFields("id,name")
-                        .addLimit("50")
-                        .addOffset("50")
-                        .addOrder("name");
-            } else if (i == 2) {
-                params = new Parameters()
-                        .addFields("id,name")
-                        .addLimit("50")
-                        .addOffset("100")
-                        .addOrder("name");
-            } else if (i == 3) {
-                params = new Parameters()
-                        .addFields("id,name")
-                        .addLimit("50")
-                        .addOffset("150")
-                        .addOrder("name");
-            }
 
 
 
@@ -197,7 +205,7 @@ public class PlatformListActivity extends AppCompatActivity
                     Log.e("Volly Error", error.toString());
                 }
             });
-        }
+        //}
         adapter = new PlatformArrayAdapter(getApplicationContext(),0,platforms);
         list = (ListView) findViewById(R.id.platformList);
         list.setAdapter(adapter);
