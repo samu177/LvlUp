@@ -10,12 +10,15 @@
 
     <EditText
         android:id="@+id/searchGame"
-        android:layout_width="239dp"
+        android:layout_width="255dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/searchButtonGame"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +35,7 @@
     <ListView
         android:id="@+id/gameList"
         android:layout_width="fill_parent"
-        android:layout_height="444dp"
+        android:layout_height="441dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
