@@ -43,26 +43,12 @@ class PlatformArrayAdapter extends ArrayAdapter<Platform> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.platform_list, null);
 
-//        ImageView img = (ImageView) view.findViewById(R.id.imgPlatform);
         TextView name = (TextView) view.findViewById(R.id.Itemname);
         TextView id = (TextView) view.findViewById(R.id.idPlatform);
 
         name.setText(String.valueOf(platform.getName()));
         id.setText(String.valueOf(platform.getId()));
 
-//        URL url = null;
-//        try {
-//            url = new URL(String.valueOf(platform.getImg()));
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        }
-//        Bitmap bmp = null;
-//        try {
-//            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        img.setImageBitmap(bmp);
 
         return view;
     }

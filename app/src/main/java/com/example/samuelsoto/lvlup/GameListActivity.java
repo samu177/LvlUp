@@ -175,10 +175,6 @@ public class GameListActivity extends AppCompatActivity
         } else if (id == R.id.nav_platforms) {
             Intent intent = new Intent(this, PlatformListActivity.class);
             this.startActivity(intent);
-        }  else if (id == R.id.nav_update) {
-
-        } else if (id == R.id.nav_options) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -141,32 +141,7 @@ public class PlatformListActivity extends AppCompatActivity
     }
 
     public void getGames() {
-//        for(int i=0; i<4; i++) {
-//            Parameters params = null;
-//            if (i == 0) {
-//                params = new Parameters()
-//                        .addFields("id,name")
-//                        .addLimit("6")
-//                        .addOrder("name");
-//            } else if (i == 1) {
-//                params = new Parameters()
-//                        .addFields("id,name")
-//                        .addLimit("50")
-//                        .addOffset("50")
-//                        .addOrder("name");
-//            } else if (i == 2) {
-//                params = new Parameters()
-//                        .addFields("id,name")
-//                        .addLimit("50")
-//                        .addOffset("100")
-//                        .addOrder("name");
-//            } else if (i == 3) {
-//                params = new Parameters()
-//                        .addFields("id,name")
-//                        .addLimit("50")
-//                        .addOffset("150")
-//                        .addOrder("name");
-//            } Xbox360 - 12  Xboxone - 49  Playstation3 - 9  Playstation4 - 48  Nintendo3DS - 37   NintendoSwitch - 130  PC - 6
+// Xbox360 - 12  Xboxone - 49  Playstation3 - 9  Playstation4 - 48  Nintendo3DS - 37   NintendoSwitch - 130  PC - 6
 
         Parameters params = null;
 
@@ -237,10 +212,6 @@ public class PlatformListActivity extends AppCompatActivity
         } else if (id == R.id.nav_platforms) {
             Intent intent = new Intent(this, PlatformListActivity.class);
             this.startActivity(intent);
-        } else if (id == R.id.nav_update) {
-
-        } else if (id == R.id.nav_options) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

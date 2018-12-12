@@ -16,18 +16,6 @@
             android:id="@+id/nav_platforms"
             android:icon="@drawable/ic_desktop_windows_black_24dp"
             android:title="Platforms" />
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_person_black_24dp"
-            android:title="Profile" />
-        <item
-            android:id="@+id/nav_update"
-            android:icon="@drawable/ic_update_black_24dp"
-            android:title="Update" />
-        <item
-            android:id="@+id/nav_options"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Options" />
     </group>
 
 </menu>

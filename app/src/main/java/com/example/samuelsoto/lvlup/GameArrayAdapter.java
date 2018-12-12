@@ -43,26 +43,11 @@ class GameArrayAdapter extends ArrayAdapter<Game> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.game_list, null);
 
-        ImageView img = (ImageView) view.findViewById(R.id.imgGame);
         TextView name = (TextView) view.findViewById(R.id.Itemname);
         TextView id = (TextView) view.findViewById(R.id.idGame);
 
         name.setText(String.valueOf(platform.getName()));
         id.setText(String.valueOf(platform.getId()));
-
-//        URL url = null;
-//        try {
-//            url = new URL(String.valueOf(game.getImg()));
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        }
-//        Bitmap bmp = null;
-//        try {
-//            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        img.setImageBitmap(bmp);
 
         return view;
     }
