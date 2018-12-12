@@ -50,7 +50,7 @@ public class GameDetail extends AppCompatActivity
 
         Log.d("ID:","La id es:" + id);
 
-        IGDBWrapper wrapper = new IGDBWrapper(this, "4661abeeaff372aa70b98588332b3b99", Version.STANDARD, false);
+        IGDBWrapper wrapper = new IGDBWrapper(this, "64092fec918a9c7ba3ef3482988430d8", Version.STANDARD, false);
 
         Parameters params = new Parameters()
                 .addIds(id)

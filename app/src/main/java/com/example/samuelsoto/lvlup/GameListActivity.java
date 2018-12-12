@@ -90,7 +90,7 @@ public class GameListActivity extends AppCompatActivity
 
                 TextView busquedaView = (TextView) findViewById(R.id.searchGame);
                 final String busqueda = busquedaView.getText().toString();
-                Log.d("Busqueda:",busqueda);
+
                 buscar(busqueda);
             }
         });
@@ -102,7 +102,8 @@ public class GameListActivity extends AppCompatActivity
     public void buscar(String busqueda){
 
         Cursor cursorGames =
-                gamesDB.rawQuery("select id, name from games", null);
+                gamesDB.rawQuery("select id, name from games where (name='Battlefield')", null);
+
 
         while(cursorGames.moveToNext()) {
             String id = cursorGames.getString(0);
@@ -116,7 +117,9 @@ public class GameListActivity extends AppCompatActivity
         adapter = new GameArrayAdapter(getApplicationContext(),0,games);
         list = (ListView) findViewById(R.id.gameList);
         list.setAdapter(adapter);
-        Log.d(GameListActivity.class.getSimpleName(), String.valueOf(count));
+        Log.d("Resultado", String.valueOf(count));
+
+        cursorGames.close();
 
     }
 
@@ -145,7 +148,6 @@ public class GameListActivity extends AppCompatActivity
         Log.d(GameListActivity.class.getSimpleName(), String.valueOf(count));
 
         cursorGames.close();
-        gamesDB.close();
     }
 
     @Override
@@ -182,5 +184,11 @@ public class GameListActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        gamesDB.close();
     }
 }

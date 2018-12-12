@@ -2,6 +2,7 @@ package com.example.samuelsoto.lvlup;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,10 +43,8 @@ public class MainActivity extends AppCompatActivity
         gamesDB  = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
         gamesDB.execSQL("CREATE TABLE IF NOT EXISTS games (id VARCHAR(50), name VARCHAR(50))");
 
-        getGames();
 
 
-        gamesDB.close();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -60,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         btnUsr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getGames();
 
             }
         });
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
     public void getGames(){
 
 
-        IGDBWrapper wrapper = new IGDBWrapper(this, "4661abeeaff372aa70b98588332b3b99", Version.STANDARD, false);
+        IGDBWrapper wrapper = new IGDBWrapper(this, "64092fec918a9c7ba3ef3482988430d8", Version.STANDARD, false);
 
         int offset=50;
         for(int i=0; i<90; i++) {
@@ -123,11 +123,13 @@ public class MainActivity extends AppCompatActivity
 
                         try {
                             Log.d("Log","Ha llegado al try");
-                            ContentValues row = new ContentValues();
-                            row.put("id", String.valueOf(json_data.getInt("id")));
-                            row.put("name", String.valueOf(json_data.getString("name")));
+                                ContentValues row = new ContentValues();
+                                row.put("id", String.valueOf(json_data.getInt("id")));
+                                row.put("name", String.valueOf(json_data.getString("name")));
+                                gamesDB.insert("games",null,row);
 
-                            gamesDB.insert("games",null,row);
+
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -178,6 +180,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        gamesDB.close();
     }
 
 }
