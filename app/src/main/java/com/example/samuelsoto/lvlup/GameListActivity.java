@@ -22,28 +22,16 @@ import android.widget.TextView;
 
 import com.example.samuelsoto.lvlup.Classes.Game;
 
-import com.android.volley.VolleyError;
-import com.igdb.api_android_java.callback.OnSuccessCallback;
-import com.igdb.api_android_java.wrapper.IGDBWrapper;
-import com.igdb.api_android_java.wrapper.Parameters;
-import com.igdb.api_android_java.wrapper.Version;
-import com.igdb.api_android_java.wrapper.Endpoint;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class GameListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Context context;
-    private IGDBWrapper  wrapper;
     private int count = 0;
-    private ArrayList<Game> games = new ArrayList<>();
     private ArrayAdapter<Game> adapter;
     private ListView list;
+    private ArrayList<Game> games = new ArrayList<>();
 
     private SQLiteDatabase gamesDB;
 
@@ -64,8 +52,6 @@ public class GameListActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         gamesDB = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
-
-        apiSetup();
         getGames();
 
         list.setClickable(true);
@@ -94,24 +80,27 @@ public class GameListActivity extends AppCompatActivity
                 buscar(busqueda);
             }
         });
-
-
-
     }
 
     public void buscar(String busqueda){
+        games.clear();
+        count=0;
+
+        Log.d("Busqueda", busqueda);
 
         Cursor cursorGames =
-                gamesDB.rawQuery("select id, name from games where (name='Battlefield')", null);
+                gamesDB.rawQuery("SELECT id, name FROM games WHERE name LIKE ? ORDER BY name", new String[] {'%'+busqueda+'%'});
 
 
         while(cursorGames.moveToNext()) {
             String id = cursorGames.getString(0);
             String name = cursorGames.getString(1);
+            Log.d("Name", name);
 
             Game p = new Game(id, name);
             games.add(p);
             count++;
+
         }
 
         adapter = new GameArrayAdapter(getApplicationContext(),0,games);
@@ -123,15 +112,10 @@ public class GameListActivity extends AppCompatActivity
 
     }
 
-    public void apiSetup() {
-        context = getApplicationContext();
-        wrapper = new IGDBWrapper(context, "4661abeeaff372aa70b98588332b3b99", Version.STANDARD, false);
-    }
-
     public void getGames() {
 
         Cursor cursorGames =
-                gamesDB.rawQuery("select id, name from games", null);
+                gamesDB.rawQuery("select id, name from games ORDER BY name", null);
 
         while(cursorGames.moveToNext()) {
             String id = cursorGames.getString(0);
@@ -181,6 +165,7 @@ public class GameListActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void onDestroy(){

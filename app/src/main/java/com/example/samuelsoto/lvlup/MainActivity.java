@@ -85,63 +85,68 @@ public class MainActivity extends AppCompatActivity
 
     public void getGames(){
 
+        gamesDB.beginTransaction();
+        try{
+            gamesDB.execSQL("delete from games");
+            Log.d("Log","Ha borrado la tabla");
+            IGDBWrapper wrapper = new IGDBWrapper(this, "64092fec918a9c7ba3ef3482988430d8", Version.STANDARD, false);
 
-        IGDBWrapper wrapper = new IGDBWrapper(this, "64092fec918a9c7ba3ef3482988430d8", Version.STANDARD, false);
+            int offset=50;
+            for(int i=0; i<100; i++) {
+                Parameters params = null;
+                if (i == 0) {
+                    params = new Parameters()
+                            .addFilter("[release_dates.platform][any]=49,48,130")
+                            .addFields("id,name")
+                            .addLimit("50")
+                            .addOrder("name");
+                }else{
+                    params = new Parameters()
+                            .addFilter("[release_dates.platform][any]=49,48,130")
+                            .addFields("id,name")
+                            .addLimit("50")
+                            .addOffset(String.valueOf(offset))
+                            .addOrder("name");
+                }
+                offset=offset+50;
 
-        int offset=50;
-        for(int i=0; i<90; i++) {
-            Parameters params = null;
-            if (i == 0) {
-                params = new Parameters()
-                        .addFilter("[release_dates.platform][any]=49,48,130")
-                        .addFields("id,name")
-                        .addLimit("50")
-                        .addOrder("name");
-            }else{
-                params = new Parameters()
-                        .addFilter("[release_dates.platform][any]=49,48,130")
-                        .addFields("id,name")
-                        .addLimit("50")
-                        .addOffset(String.valueOf(offset))
-                        .addOrder("name");
-            }
-            offset=offset+50;
+                Log.d("Log","Ha llegado al wrapper");
+                wrapper.games(params, new OnSuccessCallback() {
+                    @Override
+                    public void onSuccess(JSONArray result) {
+                            for (int i = 0; i < result.length(); i++) {
+                                JSONObject json_data = null;
+                                try {
+                                    json_data = result.getJSONObject(i);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
 
-    Log.d("Log","Ha llegado al wrapper");
-            wrapper.games(params, new OnSuccessCallback() {
-                @Override
-                public void onSuccess(JSONArray result) {
-                    Log.d("Log","Ha pasado del wrapper");
+                                try {
+                                    ContentValues row = new ContentValues();
+                                    row.put("id", String.valueOf(json_data.getInt("id")));
+                                    row.put("name", String.valueOf(json_data.getString("name")));
+                                    gamesDB.insert("games",null,row);
 
-                    for (int i = 0; i < result.length(); i++) {
-                        JSONObject json_data = null;
-                        try {
-                            json_data = result.getJSONObject(i);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
 
-                        try {
-                            Log.d("Log","Ha llegado al try");
-                                ContentValues row = new ContentValues();
-                                row.put("id", String.valueOf(json_data.getInt("id")));
-                                row.put("name", String.valueOf(json_data.getString("name")));
-                                gamesDB.insert("games",null,row);
-
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                     }
-                }
 
-                @Override
-                public void onError(VolleyError error) {
-                    Log.e("Volly Error", error.toString());
-                }
-            });
+                    @Override
+                    public void onError(VolleyError error) {
+                        Log.e("Volly Error", error.toString());
+                    }
+                });
+            }
+            gamesDB.setTransactionSuccessful();
+        }finally{
+            Log.d("Log","Transaccion finalizada");
+            gamesDB.endTransaction();
         }
+
     }
 
     @Override
