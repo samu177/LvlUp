@@ -141,7 +141,7 @@ public class PlatformListActivity extends AppCompatActivity
     }
 
     public void getGames() {
-// Xbox360 - 12  Xboxone - 49  Playstation3 - 9  Playstation4 - 48  Nintendo3DS - 37   NintendoSwitch - 130  PC - 6
+// Xboxone - 49  Playstation4 - 48 NintendoSwitch - 130
 
         Parameters params = null;
 

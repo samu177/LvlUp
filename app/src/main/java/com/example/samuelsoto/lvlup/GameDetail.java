@@ -50,11 +50,11 @@ public class GameDetail extends AppCompatActivity
 
         Log.d("ID:","La id es:" + id);
 
-        IGDBWrapper wrapper = new IGDBWrapper(this, "64092fec918a9c7ba3ef3482988430d8", Version.STANDARD, false);
+        IGDBWrapper wrapper = new IGDBWrapper(this, "11bb45eea6115987851e66f26472a6f7", Version.STANDARD, false);
 
         Parameters params = new Parameters()
                 .addIds(id)
-                .addFields("name,url");
+                .addFields("name,summary,platforms");
 
         wrapper.games(params, new OnSuccessCallback(){
             @Override
@@ -68,11 +68,33 @@ public class GameDetail extends AppCompatActivity
                 }
 
                 TextView name = (TextView) findViewById(R.id.gameName);
-                TextView url = (TextView) findViewById(R.id.gameUrl);
+                TextView summary = (TextView) findViewById(R.id.gameSummary);
+                TextView platforms = (TextView) findViewById(R.id.gamePlatforms);
 
                 try {
+
                     name.setText(String.valueOf(json_data.getString("name")));
-                    url.setText(String.valueOf(json_data.getString("url")));
+                    summary.setText(String.valueOf(json_data.getString("summary")));
+
+                    JSONArray jArray = json_data.getJSONArray("platforms");
+
+                    if(jArray.length() != 0) {
+                        StringBuilder platform = new StringBuilder();
+                        for (int i = 0; i < jArray.length(); i++) {
+                            if (jArray.getString(i).equals("48")) {
+                                platform.append("PS4 ");
+                            }
+                            if (jArray.getString(i).equals("49")) {
+                                platform.append("Xbox One ");
+                            }
+
+                            if (jArray.getString(i).equals("130")) {
+                                platform.append("Nintendo Switch ");
+                            }
+                            Log.i("log_tag", jArray.getString(i));
+                        }
+                        platforms.setText(platform.toString());
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -41,7 +41,8 @@
         <activity
             android:name=".GameDetail"
             android:label="@string/title_activity_game_detail"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.example.samuelsoto.lvlup.Classes.Game;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private SQLiteDatabase gamesDB;
+    private Toast mToastToShow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +62,11 @@ public class MainActivity extends AppCompatActivity
         btnUsr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showToast(v);
                 getGames();
-
             }
         });
+        
 
         ImageButton btnPlat = (ImageButton) findViewById(R.id.buttonPlatform);
         btnPlat.setOnClickListener(new View.OnClickListener() {
@@ -84,12 +88,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getGames(){
-
         gamesDB.beginTransaction();
         try{
             gamesDB.execSQL("delete from games");
             Log.d("Log","Ha borrado la tabla");
-            IGDBWrapper wrapper = new IGDBWrapper(this, "64092fec918a9c7ba3ef3482988430d8", Version.STANDARD, false);
+            IGDBWrapper wrapper = new IGDBWrapper(this, "11bb45eea6115987851e66f26472a6f7", Version.STANDARD, false);
 
             int offset=50;
             for(int i=0; i<100; i++) {
@@ -146,7 +149,7 @@ public class MainActivity extends AppCompatActivity
             Log.d("Log","Transaccion finalizada");
             gamesDB.endTransaction();
         }
-
+        Log.d("Log","FIN");
     }
 
     @Override
@@ -182,6 +185,27 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void showToast(View view) {
+        final Toast toast = Toast.makeText(
+                MainActivity.this,
+                "Espere hasta que acabe de actualizar la base de datos",
+                Toast.LENGTH_SHORT);
+        toast.show();
+
+        new CountDownTimer(10000, 1000)
+        {
+            public void onTick(long millisUntilFinished) {
+                toast.show();
+            }
+
+            public void onFinish() {
+                toast.cancel();
+
+            }
+        }.start();
+    }
+
 
     @Override
     public void onDestroy(){
