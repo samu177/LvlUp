@@ -27,11 +27,13 @@
         <activity
             android:name=".PlatformListActivity"
             android:label="@string/title_activity_platform"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".GameListActivity"
             android:label="@string/title_activity_game"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".PlatformDetail"
             android:label="@string/title_activity_platform_detail"

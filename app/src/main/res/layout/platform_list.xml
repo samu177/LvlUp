@@ -8,34 +8,24 @@
 
     <TextView
         android:id="@+id/Itemname"
-        android:layout_width="285dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:paddingTop="5dp"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/imgPlatform"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="#000000"/>
-
-    <ImageView
-        android:id="@+id/imgPlatform"
-        android:layout_width="55dp"
+        android:layout_width="306dp"
         android:layout_height="55dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingTop="5dp"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_desktop_windows_black_24dp" />
+        tools:layout_editor_absoluteY="229dp" />
 
     <TextView
         android:id="@+id/idPlatform"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="52dp"
         android:text="TextView"
         android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@+id/Itemname"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="322dp" />
 </android.support.constraint.ConstraintLayout>

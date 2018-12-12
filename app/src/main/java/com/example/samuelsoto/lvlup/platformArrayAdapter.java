@@ -43,7 +43,7 @@ class PlatformArrayAdapter extends ArrayAdapter<Platform> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.platform_list, null);
 
-        ImageView img = (ImageView) view.findViewById(R.id.imgPlatform);
+//        ImageView img = (ImageView) view.findViewById(R.id.imgPlatform);
         TextView name = (TextView) view.findViewById(R.id.Itemname);
         TextView id = (TextView) view.findViewById(R.id.idPlatform);
 

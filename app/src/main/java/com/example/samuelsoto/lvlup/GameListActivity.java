@@ -2,6 +2,8 @@ package com.example.samuelsoto.lvlup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -43,6 +45,8 @@ public class GameListActivity extends AppCompatActivity
     private ArrayAdapter<Game> adapter;
     private ListView list;
 
+    private SQLiteDatabase gamesDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,8 @@ public class GameListActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        gamesDB = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
 
         apiSetup();
         getGames();
@@ -84,7 +90,7 @@ public class GameListActivity extends AppCompatActivity
 
                 TextView busquedaView = (TextView) findViewById(R.id.searchGame);
                 final String busqueda = busquedaView.getText().toString();
-                Log.d("Busqueda:",busqueda);
+
                 buscar(busqueda);
             }
         });
@@ -94,45 +100,27 @@ public class GameListActivity extends AppCompatActivity
     }
 
     public void buscar(String busqueda){
-        Log.d(GameListActivity.class.getSimpleName(),busqueda);
-        games.clear();
-        Parameters params = new Parameters()
-                .addSearch(busqueda)
-                .addFields("id,name")
-                .addOrder("name");
 
-        wrapper.search(Endpoint.GAMES, params, new OnSuccessCallback(){
-            @Override
-            public void onSuccess(JSONArray result) {
-                for (int i = 0; i < result.length(); i++) {
-                    JSONObject json_data = null;
-                    try {
-                        json_data = result.getJSONObject(i);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+        Cursor cursorGames =
+                gamesDB.rawQuery("select id, name from games where (name='Battlefield')", null);
 
-                    try {
-                        Game p = new Game(String.valueOf(json_data.getInt("id")), String.valueOf(json_data.getString("name")));
-                        games.add(p);
-                        count++;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
 
-                adapter = new GameArrayAdapter(getApplicationContext(),0,games);
-                list = (ListView) findViewById(R.id.gameList);
-                list.setAdapter(adapter);
-                Log.d(GameListActivity.class.getSimpleName(), String.valueOf(count));
+        while(cursorGames.moveToNext()) {
+            String id = cursorGames.getString(0);
+            String name = cursorGames.getString(1);
 
-            }
+            Game p = new Game(id, name);
+            games.add(p);
+            count++;
+        }
 
-            @Override
-            public void onError(VolleyError error) {
-                Log.e("Volly Error", error.toString());
-            }
-        });
+        adapter = new GameArrayAdapter(getApplicationContext(),0,games);
+        list = (ListView) findViewById(R.id.gameList);
+        list.setAdapter(adapter);
+        Log.d("Resultado", String.valueOf(count));
+
+        cursorGames.close();
+
     }
 
     public void apiSetup() {
@@ -141,58 +129,25 @@ public class GameListActivity extends AppCompatActivity
     }
 
     public void getGames() {
-        int offset=50;
-        for(int i=0; i<90; i++) {
-            Parameters params = null;
-            if (i == 0) {
-                params = new Parameters()
-                        .addFilter("[release_dates.platform][any]=49,48,130")
-                        .addFields("id,name")
-                        .addLimit("50")
-                        .addOrder("name");
-            }else{
-                params = new Parameters()
-                        .addFilter("[release_dates.platform][any]=49,48,130")
-                        .addFields("id,name")
-                        .addLimit("50")
-                        .addOffset(String.valueOf(offset))
-                        .addOrder("name");
-            }
-            offset=offset+50;
 
+        Cursor cursorGames =
+                gamesDB.rawQuery("select id, name from games", null);
 
-            wrapper.games(params, new OnSuccessCallback() {
-                @Override
-                public void onSuccess(JSONArray result) {
+        while(cursorGames.moveToNext()) {
+            String id = cursorGames.getString(0);
+            String name = cursorGames.getString(1);
 
-                    for (int i = 0; i < result.length(); i++) {
-                        JSONObject json_data = null;
-                        try {
-                            json_data = result.getJSONObject(i);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            Game p = new Game(String.valueOf(json_data.getInt("id")), String.valueOf(json_data.getString("name")));
-                            games.add(p);
-                            count++;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                @Override
-                public void onError(VolleyError error) {
-                    Log.e("Volly Error", error.toString());
-                }
-            });
+            Game p = new Game(id, name);
+            games.add(p);
+            count++;
         }
+
         adapter = new GameArrayAdapter(getApplicationContext(),0,games);
         list = (ListView) findViewById(R.id.gameList);
         list.setAdapter(adapter);
         Log.d(GameListActivity.class.getSimpleName(), String.valueOf(count));
+
+        cursorGames.close();
     }
 
     @Override
@@ -229,5 +184,11 @@ public class GameListActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        gamesDB.close();
     }
 }
