@@ -1,15 +1,18 @@
 package com.example.samuelsoto.lvlup.Classes;
 
-public class Platform {
+public class UserGame {
 
     //property basics
     private String id;
     private String name;
-
+    private String summary;
+    private String platforms;
+    private String cost;
+    private String comment;
 
 
     //constructor
-    public Platform(String id, String name){
+    public UserGame(String id, String name){
         this.id = id;
         this.name = name;
 

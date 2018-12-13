@@ -2,52 +2,45 @@ package com.example.samuelsoto.lvlup;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.samuelsoto.lvlup.Classes.Platform;
-import com.example.samuelsoto.lvlup.R;
+import com.example.samuelsoto.lvlup.Classes.UserGame;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-class PlatformArrayAdapter extends ArrayAdapter<Platform> {
+class UserGameArrayAdapter extends ArrayAdapter<UserGame> {
 
     private Context context;
-    private List<Platform> platformProperties;
+    private List<UserGame> userGameProperties;
 
     //constructor, call on creation
-    public PlatformArrayAdapter(Context context, int resource, ArrayList<Platform> objects) {
+    public UserGameArrayAdapter(Context context, int resource, ArrayList<UserGame> objects) {
         super(context, resource, objects);
 
         this.context = context;
-        this.platformProperties = objects;
+        this.userGameProperties = objects;
     }
 
     //called when rendering the list
     public View getView(int position, View convertView, ViewGroup parent) {
 
         //get the property we are displaying
-        Platform platform = platformProperties.get(position);
+        UserGame userGame = userGameProperties.get(position);
 
         //get the inflater and inflate the XML layout for each item
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.platform_list, null);
+        View view = inflater.inflate(R.layout.user_game_list, null);
 
         TextView name = (TextView) view.findViewById(R.id.Itemname);
-        TextView id = (TextView) view.findViewById(R.id.idPlatform);
+        TextView id = (TextView) view.findViewById(R.id.idGame);
 
-        name.setText(String.valueOf(platform.getName()));
-        id.setText(String.valueOf(platform.getId()));
+        name.setText(String.valueOf(userGame.getName()));
+        id.setText(String.valueOf(userGame.getId()));
 
 
         return view;

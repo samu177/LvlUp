@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".PlatformDetail"
-    tools:showIn="@layout/app_bar_platform_detail">
+    tools:context=".UserGameDetail"
+    tools:showIn="@layout/app_bar_user_game_detail">
 
     <TextView
         android:id="@+id/platformName"

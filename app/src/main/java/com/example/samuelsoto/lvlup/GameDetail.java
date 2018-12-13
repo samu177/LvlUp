@@ -1,9 +1,8 @@
 package com.example.samuelsoto.lvlup;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -12,8 +11,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -26,8 +26,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 public class GameDetail extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private SQLiteDatabase gamesDB;
+    private String id;
+    private TextView name;
+    private TextView summary;
+    private TextView platforms;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +53,7 @@ public class GameDetail extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Intent mIntent = getIntent();
-        String id = mIntent.getStringExtra("ID");
+        id = mIntent.getStringExtra("ID");
 
         Log.d("ID:","La id es:" + id);
 
@@ -67,9 +74,9 @@ public class GameDetail extends AppCompatActivity
                     e.printStackTrace();
                 }
 
-                TextView name = (TextView) findViewById(R.id.gameName);
-                TextView summary = (TextView) findViewById(R.id.gameSummary);
-                TextView platforms = (TextView) findViewById(R.id.gamePlatforms);
+                name = (TextView) findViewById(R.id.gameName);
+                summary = (TextView) findViewById(R.id.gameSummary);
+                platforms = (TextView) findViewById(R.id.gamePlatforms);
 
                 try {
 
@@ -105,6 +112,27 @@ public class GameDetail extends AppCompatActivity
                 // Do something on error
             }
         });
+
+        Button addGame = (Button) findViewById(R.id.addGame);
+        addGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gamesDB  = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
+
+                EditText cost = (EditText) findViewById(R.id.editMoneySpent);
+                EditText comment = (EditText) findViewById(R.id.editComment);
+
+
+                gamesDB.execSQL("INSERT OR IGNORE INTO user_games( id, name, summary, platforms, cost, comment) VALUES(?,?,?,?,?,?)", new String[] {id,String.valueOf(name.getText()),
+                        String.valueOf(summary.getText()),String.valueOf(platforms.getText()),cost.getText().toString(),comment.getText().toString()});
+                Log.i("cost", cost.getText().toString());
+                Log.i("log_tag", "juego añadido");
+            }
+        });
+
+
+
+
     }
 
     @Override
@@ -131,7 +159,7 @@ public class GameDetail extends AppCompatActivity
             Intent intent = new Intent(this, GameListActivity.class);
             this.startActivity(intent);
         } else if (id == R.id.nav_platforms) {
-            Intent intent = new Intent(this, PlatformListActivity.class);
+            Intent intent = new Intent(this, UserGameListActivity.class);
             this.startActivity(intent);
         }
 

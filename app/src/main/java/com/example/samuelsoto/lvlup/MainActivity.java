@@ -16,11 +16,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.example.samuelsoto.lvlup.Classes.Game;
 import com.igdb.api_android_java.callback.OnSuccessCallback;
 import com.igdb.api_android_java.wrapper.IGDBWrapper;
 import com.igdb.api_android_java.wrapper.Parameters;
@@ -34,7 +33,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private SQLiteDatabase gamesDB;
-    private Toast mToastToShow;
+    private Toast toast;
+    private Cursor cursorGames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +43,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Crear base de datos
+
         gamesDB  = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
         gamesDB.execSQL("CREATE TABLE IF NOT EXISTS games (id VARCHAR(50), name VARCHAR(50))");
+        gamesDB.execSQL("CREATE TABLE IF NOT EXISTS user_games (id VARCHAR(50), name VARCHAR(50), summary TEXT, platforms VARCHAR(50), cost DECIMAL(5,2), comment TEXT, PRIMARY KEY (id))");
 
-
-
+        updateMain();
+        //deleteUserGames();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -58,21 +61,21 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ImageButton btnUsr = (ImageButton) findViewById(R.id.buttonUser);
-        btnUsr.setOnClickListener(new View.OnClickListener() {
+        ImageButton buttonUpdate = (ImageButton) findViewById(R.id.buttonUpdate);
+        buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showToast(v);
                 getGames();
             }
         });
-        
 
-        ImageButton btnPlat = (ImageButton) findViewById(R.id.buttonPlatform);
-        btnPlat.setOnClickListener(new View.OnClickListener() {
+
+        ImageButton btnUsr = (ImageButton) findViewById(R.id.buttonUsr);
+        btnUsr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), PlatformListActivity.class);
+                Intent intent = new Intent(v.getContext(), UserGameListActivity.class);
                 startActivityForResult(intent, 0);
             }
         });
@@ -153,6 +156,52 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        updateMain();
+    }
+
+    private void deleteUserGames(){
+        gamesDB.execSQL("delete from user_games");
+    }
+
+    private void updateMain(){
+        //Recoger el número de juegos de la lista
+        cursorGames  = gamesDB.rawQuery("SELECT count(*) FROM user_games", null);
+
+        String countgames = "0";
+
+        while(cursorGames.moveToNext()) {
+            if(cursorGames.getString(0) != null){
+                countgames = cursorGames.getString(0);
+            }
+            Log.d("number of games", countgames);
+        }
+
+        TextView ngames = (TextView) findViewById(R.id.txtNumGames);
+        ngames.setText(countgames);
+        cursorGames.close();
+
+        //Recoger el dinero total gastado
+        cursorGames  = gamesDB.rawQuery("SELECT cost FROM user_games", null);
+
+        float totalCost=0;
+
+        while(cursorGames.moveToNext()) {
+            if(cursorGames.getFloat(0) != 0.0f){
+                totalCost = cursorGames.getFloat(0);
+            }
+            Log.d("total cost", String.valueOf(totalCost));
+        }
+
+        TextView cost = (TextView) findViewById(R.id.txtMoneySpent);
+        String display = String.valueOf(totalCost) + '€';
+        cost.setText(display);
+        cursorGames.close();
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -177,7 +226,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, GameListActivity.class);
             this.startActivity(intent);
         } else if (id == R.id.nav_platforms) {
-            Intent intent = new Intent(this, PlatformListActivity.class);
+            Intent intent = new Intent(this, UserGameListActivity.class);
             this.startActivity(intent);
         }
 
@@ -187,7 +236,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void showToast(View view) {
-        final Toast toast = Toast.makeText(
+        toast = Toast.makeText(
                 MainActivity.this,
                 "Espere hasta que acabe de actualizar la base de datos",
                 Toast.LENGTH_SHORT);

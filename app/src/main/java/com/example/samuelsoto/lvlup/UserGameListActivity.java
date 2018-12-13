@@ -18,7 +18,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.samuelsoto.lvlup.Classes.Platform;
+import com.example.samuelsoto.lvlup.Classes.UserGame;
 
 import com.android.volley.VolleyError;
 import com.igdb.api_android_java.callback.OnSuccessCallback;
@@ -33,20 +33,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class PlatformListActivity extends AppCompatActivity
+public class UserGameListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Context context;
     private IGDBWrapper  wrapper;
     private int count = 0;
-    private ArrayList<Platform> platforms = new ArrayList<>();
-    private ArrayAdapter<Platform> adapter;
+    private ArrayList<UserGame> userGames = new ArrayList<>();
+    private ArrayAdapter<UserGame> adapter;
     private ListView list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_platform_list);
+        setContentView(R.layout.activity_user_game_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -69,8 +69,8 @@ public class PlatformListActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
                 Log.i("Click", "click en el elemento " + position);
 
-                Intent intent = new Intent(view.getContext(),PlatformDetail.class);
-                intent.putExtra("ID", platforms.get(position).getId());
+                Intent intent = new Intent(view.getContext(),UserGameDetail.class);
+                intent.putExtra("ID", userGames.get(position).getId());
                 startActivity(intent);
 
             }
@@ -94,8 +94,8 @@ public class PlatformListActivity extends AppCompatActivity
     }
 
     public void buscar(String busqueda){
-        Log.d(PlatformListActivity.class.getSimpleName(),busqueda);
-        platforms.clear();
+        Log.d(UserGameListActivity.class.getSimpleName(),busqueda);
+        userGames.clear();
         Parameters params = new Parameters()
                 .addSearch(busqueda)
                 .addFields("id,name")
@@ -113,18 +113,18 @@ public class PlatformListActivity extends AppCompatActivity
                     }
 
                     try {
-                        Platform p = new Platform(String.valueOf(json_data.getInt("id")), String.valueOf(json_data.getString("name")));
-                        platforms.add(p);
+                        UserGame p = new UserGame(String.valueOf(json_data.getInt("id")), String.valueOf(json_data.getString("name")));
+                        userGames.add(p);
                         count++;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
 
-                adapter = new PlatformArrayAdapter(getApplicationContext(),0,platforms);
+                adapter = new UserGameArrayAdapter(getApplicationContext(),0, userGames);
                 list = (ListView) findViewById(R.id.platformList);
                 list.setAdapter(adapter);
-                Log.d(PlatformListActivity.class.getSimpleName(), String.valueOf(count));
+                Log.d(UserGameListActivity.class.getSimpleName(), String.valueOf(count));
 
             }
 
@@ -166,8 +166,8 @@ public class PlatformListActivity extends AppCompatActivity
                         }
 
                         try {
-                            Platform p = new Platform(String.valueOf(json_data.getInt("id")), String.valueOf(json_data.getString("name")));
-                            platforms.add(p);
+                            UserGame p = new UserGame(String.valueOf(json_data.getInt("id")), String.valueOf(json_data.getString("name")));
+                            userGames.add(p);
                             count++;
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -181,10 +181,10 @@ public class PlatformListActivity extends AppCompatActivity
                 }
             });
         //}
-        adapter = new PlatformArrayAdapter(getApplicationContext(),0,platforms);
+        adapter = new UserGameArrayAdapter(getApplicationContext(),0, userGames);
         list = (ListView) findViewById(R.id.platformList);
         list.setAdapter(adapter);
-        Log.d(PlatformListActivity.class.getSimpleName(), String.valueOf(count));
+        Log.d(UserGameListActivity.class.getSimpleName(), String.valueOf(count));
     }
 
     @Override
@@ -210,7 +210,7 @@ public class PlatformListActivity extends AppCompatActivity
             Intent intent = new Intent(this, GameListActivity.class);
             this.startActivity(intent);
         } else if (id == R.id.nav_platforms) {
-            Intent intent = new Intent(this, PlatformListActivity.class);
+            Intent intent = new Intent(this, UserGameListActivity.class);
             this.startActivity(intent);
         }
 

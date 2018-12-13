@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlatformListActivity"
+            android:name=".UserGameListActivity"
             android:label="@string/title_activity_platform"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
@@ -35,7 +35,7 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".PlatformDetail"
+            android:name=".UserGameDetail"
             android:label="@string/title_activity_platform_detail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

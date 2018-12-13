@@ -12,8 +12,7 @@
     <string name="title_activity_user">LvlUp</string>
     <string name="title_activity_platform">LvlUp</string>
     <string name="title_activity_game">LvlUp</string>
-    <string name="title_activity_platform_detail">platformDetail</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="title_activity_game_detail">GameDetail</string>
+    <string name="title_activity_platform_detail">LvlUp</string>
+    <string name="title_activity_game_detail">LvlUp</string>
 
 </resources>

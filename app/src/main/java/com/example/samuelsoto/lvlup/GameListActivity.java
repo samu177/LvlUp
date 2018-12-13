@@ -89,7 +89,7 @@ public class GameListActivity extends AppCompatActivity
         Log.d("Busqueda", busqueda);
 
         Cursor cursorGames =
-                gamesDB.rawQuery("SELECT id, name FROM games WHERE name LIKE ? ORDER BY name", new String[] {'%'+busqueda+'%'});
+                       gamesDB.rawQuery("SELECT id, name FROM games WHERE name LIKE ? ORDER BY name", new String[] {'%'+busqueda+'%'});
 
 
         while(cursorGames.moveToNext()) {
@@ -157,7 +157,7 @@ public class GameListActivity extends AppCompatActivity
             Intent intent = new Intent(this, GameListActivity.class);
             this.startActivity(intent);
         } else if (id == R.id.nav_platforms) {
-            Intent intent = new Intent(this, PlatformListActivity.class);
+            Intent intent = new Intent(this, UserGameListActivity.class);
             this.startActivity(intent);
         }
 
