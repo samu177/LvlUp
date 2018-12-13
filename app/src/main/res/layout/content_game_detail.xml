@@ -25,7 +25,7 @@
             android:layout_height="39dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Título"
+            android:text="@string/gameTitle"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
             android:layout_marginTop="8dp"
-            android:text="Título"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelTitle" />
 
@@ -46,7 +45,7 @@
             android:layout_height="39dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:text="Descripción"
+            android:text="@string/gameDescription"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gameName" />
@@ -57,7 +56,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
             android:layout_marginTop="8dp"
-            android:text="Descripción"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelSummary" />
@@ -68,7 +66,7 @@
             android:layout_height="39dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:text="Plataformas"
+            android:text="@string/gamePlatforms"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gameSummary" />
@@ -79,7 +77,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
             android:layout_marginTop="8dp"
-            android:text="Plataformas"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelPlatforms" />
 
@@ -89,7 +86,7 @@
             android:layout_height="38dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="28dp"
-            android:text="@string/dinero_gastado"
+            android:text="@string/gameMoney"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gamePlatforms" />
@@ -101,8 +98,8 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="28dp"
             android:ems="10"
+            android:hint="0.0"
             android:inputType="number"
-            android:text="0.00"
             app:layout_constraintStart_toEndOf="@+id/labelMoneySpent"
             app:layout_constraintTop_toBottomOf="@+id/gamePlatforms" />
 
@@ -112,7 +109,7 @@
             android:layout_height="38dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="44dp"
-            android:text="Comentario:"
+            android:text="@string/gameComment"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelMoneySpent" />
@@ -124,8 +121,8 @@
             android:layout_marginStart="28dp"
             android:layout_marginTop="32dp"
             android:ems="10"
+            android:hint="@string/gameComment"
             android:inputType="text"
-            android:text="Comentario"
             app:layout_constraintStart_toEndOf="@+id/labelComment"
             app:layout_constraintTop_toBottomOf="@+id/editMoneySpent" />
 
@@ -136,7 +133,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp"
-            android:text="Añadir Juego"
+            android:text="@string/gameAddGame"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editComment" />

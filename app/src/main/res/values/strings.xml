@@ -14,5 +14,12 @@
     <string name="title_activity_game">LvlUp</string>
     <string name="title_activity_platform_detail">LvlUp</string>
     <string name="title_activity_game_detail">LvlUp</string>
+    <string name="gameTitle">Titulo</string>
+    <string name="gameDescription">Descripción</string>
+    <string name="gamePlatforms">Plataformas</string>
+    <string name="gameMoney">Dinero gastado:</string>
+    <string name="gameComment">Comentario</string>
+    <string name="gameAddGame">Añadir Juego</string>
+    <string name="gameSearch">Buscar</string>
 
 </resources>
