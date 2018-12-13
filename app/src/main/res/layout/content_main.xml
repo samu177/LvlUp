@@ -7,7 +7,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main"
-    android:id="@+id/fragmentContainer">
+    android:id="@+id/fragmentContainer"
+    android:background="?attr/backgroundcolor">
 
     <TextView
         android:id="@+id/labelJuegos"
@@ -17,6 +18,7 @@
         android:layout_marginTop="28dp"
         android:text="@string/gameSearch"
         android:textSize="24sp"
+        android:textColor="?attr/textcolor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,6 +29,8 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:scaleType="fitXY"
+        android:background="?attr/buttonbackground"
+        android:tint="?attr/tintcolor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelJuegos"
         app:srcCompat="@drawable/ic_videogame_asset_black_24dp"
@@ -40,6 +44,7 @@
         android:layout_marginTop="28dp"
         android:text="@string/update"
         android:textSize="24sp"
+        android:textColor="?attr/textcolor"
         app:layout_constraintStart_toEndOf="@+id/labelJuegos"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -51,6 +56,8 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:scaleType="fitXY"
+        android:background="?attr/buttonbackground"
+        android:tint="?attr/tintcolor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/labelPerfil"
         app:srcCompat="@drawable/ic_star_black_24dp"
@@ -64,6 +71,7 @@
         android:layout_marginTop="44dp"
         android:text="@string/perfil"
         android:textSize="24sp"
+        android:textColor="?attr/textcolor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonGame"
         tools:ignore="MissingConstraints" />
@@ -77,10 +85,12 @@
         android:adjustViewBounds="false"
         android:cropToPadding="false"
         android:scaleType="fitXY"
+        android:background="?attr/buttonbackground"
+        android:tint="?attr/tintcolor"
         app:layout_constraintStart_toEndOf="@+id/buttonGame"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:srcCompat="@drawable/ic_update_black_24dp"
-        tools:ignore="VectorDrawableCompat" />
+        tools:ignore="VectorDrawableCompat"/>
 
     <TextView
         android:id="@+id/labelNumJuegos"
@@ -90,6 +100,7 @@
         android:layout_marginTop="28dp"
         android:text="@string/num_total_de_juegos"
         android:textStyle="bold"
+        android:textColor="?attr/textcolor"
         app:layout_constraintStart_toEndOf="@+id/buttonUsr"
         app:layout_constraintTop_toBottomOf="@+id/labelPerfil" />
 
@@ -100,6 +111,7 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="40dp"
         android:text="0"
+        android:textColor="?attr/textcolor"
         app:layout_constraintStart_toEndOf="@+id/labelNumJuegos"
         app:layout_constraintTop_toBottomOf="@+id/labelPerfil" />
 
@@ -111,6 +123,7 @@
         android:layout_marginTop="12dp"
         android:text="@string/dinero_gastado"
         android:textStyle="bold"
+        android:textColor="?attr/textcolor"
         app:layout_constraintStart_toEndOf="@+id/buttonUsr"
         app:layout_constraintTop_toBottomOf="@+id/labelNumJuegos" />
 
@@ -121,6 +134,7 @@
         android:layout_marginStart="28dp"
         android:layout_marginTop="28dp"
         android:text="0€"
+        android:textColor="?attr/textcolor"
         app:layout_constraintStart_toEndOf="@+id/labelDineroGastado"
         app:layout_constraintTop_toBottomOf="@+id/txtNumGames" />
 

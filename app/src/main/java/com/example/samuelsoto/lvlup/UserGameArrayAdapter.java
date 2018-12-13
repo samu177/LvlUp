@@ -18,7 +18,6 @@ class UserGameArrayAdapter extends ArrayAdapter<Game> {
     private Context context;
     private List<Game> userGameProperties;
 
-    //constructor, call on creation
     public UserGameArrayAdapter(Context context, int resource, ArrayList<Game> objects) {
         super(context, resource, objects);
 
@@ -26,13 +25,10 @@ class UserGameArrayAdapter extends ArrayAdapter<Game> {
         this.userGameProperties = objects;
     }
 
-    //called when rendering the list
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        //get the property we are displaying
         Game userGame = userGameProperties.get(position);
 
-        //get the inflater and inflate the XML layout for each item
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.user_game_list, null);
 

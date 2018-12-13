@@ -2,11 +2,14 @@ package com.example.samuelsoto.lvlup;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,9 +38,12 @@ public class MainActivity extends AppCompatActivity
     private SQLiteDatabase gamesDB;
     private Toast toast;
     private Cursor cursorGames;
+    public static final String theme = "MyPrefsFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        lightordark();
+        changeTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -50,7 +56,6 @@ public class MainActivity extends AppCompatActivity
         gamesDB.execSQL("CREATE TABLE IF NOT EXISTS user_games (id VARCHAR(50), name VARCHAR(50), summary TEXT, platforms VARCHAR(50), cost DECIMAL(5,2), score SMALLINT, comment TEXT, PRIMARY KEY (id))");
 
         updateMain();
-        //deleteUserGames();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -93,12 +98,12 @@ public class MainActivity extends AppCompatActivity
     public void getGames(){
         gamesDB.beginTransaction();
         try{
+            //delete the table before insert
             gamesDB.execSQL("delete from games");
-            Log.d("Log","Ha borrado la tabla");
             IGDBWrapper wrapper = new IGDBWrapper(this, "11bb45eea6115987851e66f26472a6f7", Version.STANDARD, false);
 
             int offset=50;
-            for(int i=0; i<100; i++) {
+            for(int i=0; i<100; i++) { //get the games from Xbox One, PS4 and Nintendo Switch
                 Parameters params = null;
                 if (i == 0) {
                     params = new Parameters()
@@ -116,7 +121,6 @@ public class MainActivity extends AppCompatActivity
                 }
                 offset=offset+50;
 
-                Log.d("Log","Ha llegado al wrapper");
                 wrapper.games(params, new OnSuccessCallback() {
                     @Override
                     public void onSuccess(JSONArray result) {
@@ -149,10 +153,27 @@ public class MainActivity extends AppCompatActivity
             }
             gamesDB.setTransactionSuccessful();
         }finally{
-            Log.d("Log","Transaccion finalizada");
             gamesDB.endTransaction();
         }
-        Log.d("Log","FIN");
+    }
+
+    //restore the theme of the app
+    private void lightordark(){
+        SharedPreferences prefs = getSharedPreferences(theme, MODE_PRIVATE);
+        int restoredInt = prefs.getInt("dark",0);
+        if(restoredInt==1){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
+    private void changeTheme(){
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.darktheme);
+        }else{
+            setTheme(R.style.AppTheme);
+        }
     }
 
     @Override
@@ -162,12 +183,8 @@ public class MainActivity extends AppCompatActivity
         updateMain();
     }
 
-    private void deleteUserGames(){
-        gamesDB.execSQL("delete from user_games");
-    }
-
     private void updateMain(){
-        //Recoger el número de juegos de la lista
+        //collect the number of games
         cursorGames  = gamesDB.rawQuery("SELECT count(*) FROM user_games", null);
 
         String countgames = "0";
@@ -176,14 +193,13 @@ public class MainActivity extends AppCompatActivity
             if(cursorGames.getString(0) != null){
                 countgames = cursorGames.getString(0);
             }
-            Log.d("number of games", countgames);
         }
 
         TextView ngames = (TextView) findViewById(R.id.txtNumGames);
         ngames.setText(countgames);
         cursorGames.close();
 
-        //Recoger el dinero total gastado
+        //collect the money spent
         cursorGames  = gamesDB.rawQuery("SELECT SUM(cost) FROM user_games", null);
 
         float totalCost=0;
@@ -192,13 +208,46 @@ public class MainActivity extends AppCompatActivity
             if(cursorGames.getFloat(0) != 0.0f){
                 totalCost = cursorGames.getFloat(0);
             }
-            Log.d("total cost", String.valueOf(totalCost));
         }
 
         TextView cost = (TextView) findViewById(R.id.txtMoneySpent);
         String display = String.valueOf(totalCost) + '€';
         cost.setText(display);
         cursorGames.close();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            SharedPreferences.Editor editor = getSharedPreferences(theme, MODE_PRIVATE).edit();
+            if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                editor.putInt("dark", 0);
+                editor.apply();
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                editor.putInt("dark", 1);
+                editor.apply();
+            }
+            Intent i = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(i);
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -215,12 +264,12 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation view item clicks
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
             Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //clear the rest of the activities
             this.startActivity(intent);
         } else if (id == R.id.nav_games) {
             Intent intent = new Intent(this, GameListActivity.class);

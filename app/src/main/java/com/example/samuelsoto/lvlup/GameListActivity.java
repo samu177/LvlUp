@@ -10,8 +10,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,6 +37,7 @@ public class GameListActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        changeTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,8 +60,8 @@ public class GameListActivity extends AppCompatActivity
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-                Log.i("Click", "click en el elemento " + position);
 
+                //go to the details activity of a element
                 Intent intent = new Intent(view.getContext(),GameDetail.class);
                 intent.putExtra("ID", games.get(position).getId());
                 startActivity(intent);
@@ -86,8 +87,6 @@ public class GameListActivity extends AppCompatActivity
         games.clear();
         count=0;
 
-        Log.d("Busqueda", busqueda);
-
         Cursor cursorGames =
                        gamesDB.rawQuery("SELECT id, name FROM games WHERE name LIKE ? ORDER BY name", new String[] {'%'+busqueda+'%'});
 
@@ -95,7 +94,6 @@ public class GameListActivity extends AppCompatActivity
         while(cursorGames.moveToNext()) {
             String id = cursorGames.getString(0);
             String name = cursorGames.getString(1);
-            Log.d("Name", name);
 
             Game p = new Game(id, name);
             games.add(p);
@@ -106,7 +104,6 @@ public class GameListActivity extends AppCompatActivity
         adapter = new GameArrayAdapter(getApplicationContext(),0,games);
         list = (ListView) findViewById(R.id.gameList);
         list.setAdapter(adapter);
-        Log.d("Resultado", String.valueOf(count));
 
         cursorGames.close();
 
@@ -129,9 +126,16 @@ public class GameListActivity extends AppCompatActivity
         adapter = new GameArrayAdapter(getApplicationContext(),0,games);
         list = (ListView) findViewById(R.id.gameList);
         list.setAdapter(adapter);
-        Log.d(GameListActivity.class.getSimpleName(), String.valueOf(count));
 
         cursorGames.close();
+    }
+
+    private void changeTheme(){
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.darktheme);
+        }else{
+            setTheme(R.style.AppTheme);
+        }
     }
 
     @Override

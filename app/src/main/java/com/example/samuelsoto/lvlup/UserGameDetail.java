@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 
@@ -33,6 +32,7 @@ public class UserGameDetail extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        changeTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_game_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -49,8 +49,6 @@ public class UserGameDetail extends AppCompatActivity
 
         Intent mIntent = getIntent();
         id = mIntent.getStringExtra("ID");
-
-        Log.d("ID:","La id es:" + id);
 
         gamesDB = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
 
@@ -72,7 +70,6 @@ public class UserGameDetail extends AppCompatActivity
         EditText cost_et = (EditText) findViewById(R.id.editMoneySpent);
         EditText score_et = (EditText) findViewById(R.id.editScore);
         EditText comment_et = (EditText) findViewById(R.id.editComment);
-        Log.d("ID:","La id es asdf:" + name);
 
         name_tv.setText(name);
         summary_tv.setText(summary);
@@ -81,7 +78,6 @@ public class UserGameDetail extends AppCompatActivity
         score_et.setText(String.valueOf(score));
         comment_et.setText(comment);
 
-        Log.d(GameListActivity.class.getSimpleName(), String.valueOf(id));
 
         cursorGames.close();
 
@@ -90,6 +86,7 @@ public class UserGameDetail extends AppCompatActivity
         modGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //update the game from the favourites list
                 gamesDB  = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
 
                 EditText cost = (EditText) findViewById(R.id.editMoneySpent);
@@ -98,8 +95,6 @@ public class UserGameDetail extends AppCompatActivity
 
 
                 gamesDB.execSQL("UPDATE user_games SET cost = ?, score = ?, comment = ? WHERE id = ?", new String[] {cost.getText().toString(),score.getText().toString(),comment.getText().toString(),id});
-                Log.i("cost", cost.getText().toString());
-                Log.i("log_tag", "juego modificado");
                 finish();
             }
         });
@@ -108,13 +103,21 @@ public class UserGameDetail extends AppCompatActivity
         deleteGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //delete the game from the favourites list
                 gamesDB  = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
 
                 gamesDB.execSQL("DELETE FROM user_games WHERE id = ?", new String[] {id});
-                Log.i("log_tag", "juego añadido");
                 finish();
             }
         });
+    }
+
+    private void changeTheme(){
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.darktheme);
+        }else{
+            setTheme(R.style.AppTheme);
+        }
     }
 
     @Override
@@ -130,7 +133,7 @@ public class UserGameDetail extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation view item
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {

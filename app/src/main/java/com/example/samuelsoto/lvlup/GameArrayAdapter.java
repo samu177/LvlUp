@@ -1,25 +1,24 @@
 package com.example.samuelsoto.lvlup;
 
 
-        import android.app.Activity;
-        import android.content.Context;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.ArrayAdapter;
-        import android.widget.TextView;
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
-        import com.example.samuelsoto.lvlup.Classes.Game;
+import com.example.samuelsoto.lvlup.Classes.Game;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 class GameArrayAdapter extends ArrayAdapter<Game> {
 
     private Context context;
     private List<Game> GameProperties;
 
-    //constructor, call on creation
     public GameArrayAdapter(Context context, int resource, ArrayList<Game> objects) {
         super(context, resource, objects);
 
@@ -27,10 +26,8 @@ class GameArrayAdapter extends ArrayAdapter<Game> {
         this.GameProperties = objects;
     }
 
-    //called when rendering the list
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        //get the property we are displaying
         Game platform = GameProperties.get(position);
 
         //get the inflater and inflate the XML layout for each item
@@ -39,7 +36,6 @@ class GameArrayAdapter extends ArrayAdapter<Game> {
 
         TextView id = (TextView) view.findViewById(R.id.idGame);
         TextView name = (TextView) view.findViewById(R.id.Itemname);
-
 
         name.setText(String.valueOf(platform.getName()));
         id.setText(String.valueOf(platform.getId()));

@@ -3,7 +3,7 @@ package com.example.samuelsoto.lvlup;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -38,6 +38,7 @@ public class GameDetail extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        changeTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -52,11 +53,11 @@ public class GameDetail extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //the id is collected
         Intent mIntent = getIntent();
         id = mIntent.getStringExtra("ID");
 
-        Log.d("ID:","La id es:" + id);
-
+        //API setup
         IGDBWrapper wrapper = new IGDBWrapper(this, "11bb45eea6115987851e66f26472a6f7", Version.STANDARD, false);
 
         Parameters params = new Parameters()
@@ -69,6 +70,7 @@ public class GameDetail extends AppCompatActivity
 
                 JSONObject json_data = null;
                 try {
+                    //collect the json from the API
                     json_data = result.getJSONObject(0);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -77,16 +79,24 @@ public class GameDetail extends AppCompatActivity
                 name = (TextView) findViewById(R.id.gameName);
                 summary = (TextView) findViewById(R.id.gameSummary);
                 platforms = (TextView) findViewById(R.id.gamePlatforms);
+                EditText cost = (EditText) findViewById(R.id.editMoneySpent);
+                EditText score = (EditText) findViewById(R.id.editScore);
+                EditText comment = (EditText) findViewById(R.id.editComment);
+
 
                 try {
 
                     name.setText(String.valueOf(json_data.getString("name")));
                     summary.setText(String.valueOf(json_data.getString("summary")));
+                    cost.setText("0.0");
+                    score.setText("0");
+                    comment.setText("Comentario");
 
                     JSONArray jArray = json_data.getJSONArray("platforms");
 
                     if(jArray.length() != 0) {
                         StringBuilder platform = new StringBuilder();
+                        //Check the id's of the platforms
                         for (int i = 0; i < jArray.length(); i++) {
                             if (jArray.getString(i).equals("48")) {
                                 platform.append("PS4 ");
@@ -98,7 +108,6 @@ public class GameDetail extends AppCompatActivity
                             if (jArray.getString(i).equals("130")) {
                                 platform.append("Nintendo Switch ");
                             }
-                            Log.i("log_tag", jArray.getString(i));
                         }
                         platforms.setText(platform.toString());
                     }
@@ -113,6 +122,7 @@ public class GameDetail extends AppCompatActivity
             }
         });
 
+        //handle button add game
         Button addGame = (Button) findViewById(R.id.addGame);
         addGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,16 +133,23 @@ public class GameDetail extends AppCompatActivity
                 EditText score = (EditText) findViewById(R.id.editScore);
                 EditText comment = (EditText) findViewById(R.id.editComment);
 
-
+                //insert the game into user_games table
                 gamesDB.execSQL("INSERT OR IGNORE INTO user_games( id, name, summary, platforms, cost, score, comment) VALUES(?,?,?,?,?,?,?)", new String[] {id,String.valueOf(name.getText()),
                         String.valueOf(summary.getText()),String.valueOf(platforms.getText()),cost.getText().toString(),score.getText().toString(),comment.getText().toString()});
-                Log.i("cost", cost.getText().toString());
-                Log.i("log_tag", "juego añadido");
                 finish();
             }
         });
     }
 
+    private void changeTheme(){
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.darktheme);
+        }else{
+            setTheme(R.style.AppTheme);
+        }
+    }
+
+    //function to open and close the navigation drawer menu
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -146,7 +163,7 @@ public class GameDetail extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation view item clicks
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {

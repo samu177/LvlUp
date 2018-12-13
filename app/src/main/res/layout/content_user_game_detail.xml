@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".UserGameDetail"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/app_bar_user_game_detail">
+    tools:showIn="@layout/app_bar_user_game_detail"
+    android:background="?attr/backgroundcolor">
 
     <android.support.constraint.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,6 +28,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/gameTitle"
             android:textSize="24sp"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,6 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
             android:layout_marginTop="8dp"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelTitle" />
 
@@ -47,6 +50,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/gameDescription"
             android:textSize="24sp"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gameName" />
 
@@ -57,6 +61,7 @@
             android:layout_marginStart="36dp"
             android:layout_marginTop="8dp"
             android:textStyle="normal"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelSummary" />
 
@@ -68,6 +73,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/gamePlatforms"
             android:textSize="24sp"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gameSummary" />
 
@@ -77,6 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="36dp"
             android:layout_marginTop="8dp"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelPlatforms" />
 
@@ -88,6 +95,7 @@
             android:layout_marginTop="28dp"
             android:text="@string/gameMoney"
             android:textStyle="bold"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gamePlatforms" />
 
@@ -97,7 +105,7 @@
             android:layout_height="43dp"
             android:layout_marginStart="36dp"
             android:ems="10"
-            android:hint="0.0"
+            android:textColor="?attr/textcolor"
             android:inputType="numberDecimal|numberSigned"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/labelMoneySpent" />
@@ -110,6 +118,7 @@
             android:layout_marginTop="28dp"
             android:text="@string/labelScore"
             android:textStyle="bold"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toEndOf="@+id/labelMoneySpent"
             app:layout_constraintTop_toBottomOf="@+id/gamePlatforms" />
 
@@ -119,8 +128,8 @@
             android:layout_height="43dp"
             android:layout_marginStart="112dp"
             android:ems="10"
-            android:hint="0"
             android:inputType="number"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toEndOf="@+id/editMoneySpent"
             app:layout_constraintTop_toBottomOf="@+id/labelScore" />
 
@@ -132,6 +141,7 @@
             android:layout_marginTop="40dp"
             android:text="@string/gameComment"
             android:textStyle="bold"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editMoneySpent" />
 
@@ -142,8 +152,8 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:ems="10"
-            android:hint="@string/gameComment"
             android:inputType="text"
+            android:textColor="?attr/textcolor"
             app:layout_constraintStart_toEndOf="@+id/labelComment"
             app:layout_constraintTop_toBottomOf="@+id/editScore" />
 

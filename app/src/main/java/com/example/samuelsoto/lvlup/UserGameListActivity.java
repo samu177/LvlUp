@@ -10,8 +10,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -38,6 +38,7 @@ public class UserGameListActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        changeTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_game_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -60,7 +61,6 @@ public class UserGameListActivity extends AppCompatActivity
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-                Log.i("Click", "click en el elemento " + position);
 
                 Intent intent = new Intent(view.getContext(),UserGameDetail.class);
                 intent.putExtra("ID", userGames.get(position).getId());
@@ -87,7 +87,6 @@ public class UserGameListActivity extends AppCompatActivity
         userGames.clear();
         count=0;
 
-        Log.d("Busqueda", busqueda);
 
         Cursor cursorGames =
                 gamesDB.rawQuery("SELECT id, name FROM user_games WHERE name LIKE ? ORDER BY name", new String[] {'%'+busqueda+'%'});
@@ -96,7 +95,6 @@ public class UserGameListActivity extends AppCompatActivity
         while(cursorGames.moveToNext()) {
             String id = cursorGames.getString(0);
             String name = cursorGames.getString(1);
-            Log.d("Name", name);
 
             Game p = new Game(id, name);
             userGames.add(p);
@@ -107,7 +105,6 @@ public class UserGameListActivity extends AppCompatActivity
         adapter = new UserGameArrayAdapter(getApplicationContext(),0,userGames);
         list = (ListView) findViewById(R.id.userGameList);
         list.setAdapter(adapter);
-        Log.d("Resultado", String.valueOf(count));
 
         cursorGames.close();
 
@@ -131,9 +128,16 @@ public class UserGameListActivity extends AppCompatActivity
         adapter = new UserGameArrayAdapter(getApplicationContext(),0,userGames);
         list = (ListView) findViewById(R.id.userGameList);
         list.setAdapter(adapter);
-        Log.d(GameListActivity.class.getSimpleName(), String.valueOf(count));
 
         cursorGames.close();
+    }
+
+    private void changeTheme(){
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.darktheme);
+        }else{
+            setTheme(R.style.AppTheme);
+        }
     }
 
     @Override
@@ -155,7 +159,7 @@ public class UserGameListActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation view item clicks
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
