@@ -8,18 +8,18 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.samuelsoto.lvlup.Classes.UserGame;
+import com.example.samuelsoto.lvlup.Classes.Game;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class UserGameArrayAdapter extends ArrayAdapter<UserGame> {
+class UserGameArrayAdapter extends ArrayAdapter<Game> {
 
     private Context context;
-    private List<UserGame> userGameProperties;
+    private List<Game> userGameProperties;
 
     //constructor, call on creation
-    public UserGameArrayAdapter(Context context, int resource, ArrayList<UserGame> objects) {
+    public UserGameArrayAdapter(Context context, int resource, ArrayList<Game> objects) {
         super(context, resource, objects);
 
         this.context = context;
@@ -30,7 +30,7 @@ class UserGameArrayAdapter extends ArrayAdapter<UserGame> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         //get the property we are displaying
-        UserGame userGame = userGameProperties.get(position);
+        Game userGame = userGameProperties.get(position);
 
         //get the inflater and inflate the XML layout for each item
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -41,7 +41,6 @@ class UserGameArrayAdapter extends ArrayAdapter<UserGame> {
 
         name.setText(String.valueOf(userGame.getName()));
         id.setText(String.valueOf(userGame.getId()));
-
 
         return view;
     }

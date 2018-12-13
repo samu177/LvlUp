@@ -156,7 +156,7 @@ public class GameListActivity extends AppCompatActivity
         } else if (id == R.id.nav_games) {
             Intent intent = new Intent(this, GameListActivity.class);
             this.startActivity(intent);
-        } else if (id == R.id.nav_platforms) {
+        } else if (id == R.id.nav_user_games) {
             Intent intent = new Intent(this, UserGameListActivity.class);
             this.startActivity(intent);
         }

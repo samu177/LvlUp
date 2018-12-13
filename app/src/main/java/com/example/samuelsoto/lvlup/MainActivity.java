@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
 
         gamesDB  = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
         gamesDB.execSQL("CREATE TABLE IF NOT EXISTS games (id VARCHAR(50), name VARCHAR(50))");
-        gamesDB.execSQL("CREATE TABLE IF NOT EXISTS user_games (id VARCHAR(50), name VARCHAR(50), summary TEXT, platforms VARCHAR(50), cost DECIMAL(5,2), comment TEXT, PRIMARY KEY (id))");
+        gamesDB.execSQL("CREATE TABLE IF NOT EXISTS user_games (id VARCHAR(50), name VARCHAR(50), summary TEXT, platforms VARCHAR(50), cost DECIMAL(5,2), score SMALLINT, comment TEXT, PRIMARY KEY (id))");
 
         updateMain();
         //deleteUserGames();
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity
         cursorGames.close();
 
         //Recoger el dinero total gastado
-        cursorGames  = gamesDB.rawQuery("SELECT cost FROM user_games", null);
+        cursorGames  = gamesDB.rawQuery("SELECT SUM(cost) FROM user_games", null);
 
         float totalCost=0;
 
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_games) {
             Intent intent = new Intent(this, GameListActivity.class);
             this.startActivity(intent);
-        } else if (id == R.id.nav_platforms) {
+        } else if (id == R.id.nav_user_games) {
             Intent intent = new Intent(this, UserGameListActivity.class);
             this.startActivity(intent);
         }

@@ -2,6 +2,8 @@ package com.example.samuelsoto.lvlup;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,18 +20,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.samuelsoto.lvlup.Classes.UserGame;
+import com.example.samuelsoto.lvlup.Classes.Game;
 
-import com.android.volley.VolleyError;
-import com.igdb.api_android_java.callback.OnSuccessCallback;
-import com.igdb.api_android_java.wrapper.IGDBWrapper;
-import com.igdb.api_android_java.wrapper.Parameters;
-import com.igdb.api_android_java.wrapper.Version;
-import com.igdb.api_android_java.wrapper.Endpoint;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -37,11 +30,11 @@ public class UserGameListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Context context;
-    private IGDBWrapper  wrapper;
     private int count = 0;
-    private ArrayList<UserGame> userGames = new ArrayList<>();
-    private ArrayAdapter<UserGame> adapter;
+    private ArrayList<Game> userGames = new ArrayList<>();
+    private ArrayAdapter<Game> adapter;
     private ListView list;
+    private SQLiteDatabase gamesDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +52,7 @@ public class UserGameListActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        apiSetup();
+        gamesDB = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
         getGames();
 
         list.setClickable(true);
@@ -76,115 +69,78 @@ public class UserGameListActivity extends AppCompatActivity
             }
         });
 
-        Button buscar = (Button) findViewById(R.id.searchButtonPlatform);
+        Button buscar = (Button) findViewById(R.id.searchButtonUserGames);
 
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                TextView busquedaView = (TextView) findViewById(R.id.searchPlatform);
+                TextView busquedaView = (TextView) findViewById(R.id.searchUserGame);
                 final String busqueda = busquedaView.getText().toString();
-                Log.d("Busqueda:",busqueda);
+
                 buscar(busqueda);
             }
         });
-
-
-
     }
 
     public void buscar(String busqueda){
-        Log.d(UserGameListActivity.class.getSimpleName(),busqueda);
         userGames.clear();
-        Parameters params = new Parameters()
-                .addSearch(busqueda)
-                .addFields("id,name")
-                .addOrder("name");
+        count=0;
 
-        wrapper.search(Endpoint.PLATFORMS, params, new OnSuccessCallback(){
-            @Override
-            public void onSuccess(JSONArray result) {
-                for (int i = 0; i < result.length(); i++) {
-                    JSONObject json_data = null;
-                    try {
-                        json_data = result.getJSONObject(i);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+        Log.d("Busqueda", busqueda);
 
-                    try {
-                        UserGame p = new UserGame(String.valueOf(json_data.getInt("id")), String.valueOf(json_data.getString("name")));
-                        userGames.add(p);
-                        count++;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+        Cursor cursorGames =
+                gamesDB.rawQuery("SELECT id, name FROM user_games WHERE name LIKE ? ORDER BY name", new String[] {'%'+busqueda+'%'});
 
-                adapter = new UserGameArrayAdapter(getApplicationContext(),0, userGames);
-                list = (ListView) findViewById(R.id.platformList);
-                list.setAdapter(adapter);
-                Log.d(UserGameListActivity.class.getSimpleName(), String.valueOf(count));
 
-            }
+        while(cursorGames.moveToNext()) {
+            String id = cursorGames.getString(0);
+            String name = cursorGames.getString(1);
+            Log.d("Name", name);
 
-            @Override
-            public void onError(VolleyError error) {
-                Log.e("Volly Error", error.toString());
-            }
-        });
-    }
+            Game p = new Game(id, name);
+            userGames.add(p);
+            count++;
 
-    public void apiSetup() {
-        context = getApplicationContext();
-        wrapper = new IGDBWrapper(context, "4661abeeaff372aa70b98588332b3b99", Version.STANDARD, false);
+        }
+
+        adapter = new UserGameArrayAdapter(getApplicationContext(),0,userGames);
+        list = (ListView) findViewById(R.id.userGameList);
+        list.setAdapter(adapter);
+        Log.d("Resultado", String.valueOf(count));
+
+        cursorGames.close();
+
     }
 
     public void getGames() {
-// Xboxone - 49  Playstation4 - 48 NintendoSwitch - 130
+        userGames.clear();
 
-        Parameters params = null;
+        Cursor cursorGames =
+                gamesDB.rawQuery("select id, name from user_games ORDER BY name", null);
 
-        params = new Parameters()
-                        .addIds("49,48,130")
-                        .addFields("id,name")
-                        .addLimit("50")
-                        .addOrder("name");
+        while(cursorGames.moveToNext()) {
+            String id = cursorGames.getString(0);
+            String name = cursorGames.getString(1);
 
+            Game p = new Game(id, name);
+            userGames.add(p);
+            count++;
+        }
 
-
-            wrapper.platforms(params, new OnSuccessCallback() {
-                @Override
-                public void onSuccess(JSONArray result) {
-
-                    for (int i = 0; i < result.length(); i++) {
-                        JSONObject json_data = null;
-                        try {
-                            json_data = result.getJSONObject(i);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        try {
-                            UserGame p = new UserGame(String.valueOf(json_data.getInt("id")), String.valueOf(json_data.getString("name")));
-                            userGames.add(p);
-                            count++;
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                @Override
-                public void onError(VolleyError error) {
-                    Log.e("Volly Error", error.toString());
-                }
-            });
-        //}
-        adapter = new UserGameArrayAdapter(getApplicationContext(),0, userGames);
-        list = (ListView) findViewById(R.id.platformList);
+        adapter = new UserGameArrayAdapter(getApplicationContext(),0,userGames);
+        list = (ListView) findViewById(R.id.userGameList);
         list.setAdapter(adapter);
-        Log.d(UserGameListActivity.class.getSimpleName(), String.valueOf(count));
+        Log.d(GameListActivity.class.getSimpleName(), String.valueOf(count));
+
+        cursorGames.close();
+    }
+
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        getGames();
     }
 
     @Override
@@ -209,7 +165,7 @@ public class UserGameListActivity extends AppCompatActivity
         } else if (id == R.id.nav_games) {
             Intent intent = new Intent(this, GameListActivity.class);
             this.startActivity(intent);
-        } else if (id == R.id.nav_platforms) {
+        } else if (id == R.id.nav_user_games) {
             Intent intent = new Intent(this, UserGameListActivity.class);
             this.startActivity(intent);
         }
@@ -217,5 +173,11 @@ public class UserGameListActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        gamesDB.close();
     }
 }

@@ -7,15 +7,15 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="Home" />
+            android:title="@string/home" />
         <item
             android:id="@+id/nav_games"
             android:icon="@drawable/ic_videogame_asset_black_24dp"
-            android:title="Games" />
+            android:title="@string/games" />
         <item
-            android:id="@+id/nav_platforms"
-            android:icon="@drawable/ic_desktop_windows_black_24dp"
-            android:title="Platforms" />
+            android:id="@+id/nav_user_games"
+            android:icon="@drawable/ic_star_black_24dp"
+            android:title="@string/usergames" />
     </group>
 
 </menu>

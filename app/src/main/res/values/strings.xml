@@ -18,8 +18,16 @@
     <string name="gameDescription">Descripción</string>
     <string name="gamePlatforms">Plataformas</string>
     <string name="gameMoney">Dinero gastado:</string>
-    <string name="gameComment">Comentario</string>
+    <string name="gameComment">Comentario:</string>
     <string name="gameAddGame">Añadir Juego</string>
-    <string name="gameSearch">Buscar</string>
+    <string name="gameModGame">Modificar Juego</string>
+    <string name="gameDeleteGame">Eliminar Juego</string>
+    <string name="gameSearch">Juegos</string>
+    <string name="home">Inicio</string>
+    <string name="games">Juegos</string>
+    <string name="usergames">Favoritos</string>
+    <string name="update">Actualizar</string>
+    <string name="labelScore">Puntuación:</string>
+
 
 </resources>

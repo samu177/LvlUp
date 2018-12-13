@@ -120,19 +120,17 @@ public class GameDetail extends AppCompatActivity
                 gamesDB  = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
 
                 EditText cost = (EditText) findViewById(R.id.editMoneySpent);
+                EditText score = (EditText) findViewById(R.id.editScore);
                 EditText comment = (EditText) findViewById(R.id.editComment);
 
 
-                gamesDB.execSQL("INSERT OR IGNORE INTO user_games( id, name, summary, platforms, cost, comment) VALUES(?,?,?,?,?,?)", new String[] {id,String.valueOf(name.getText()),
-                        String.valueOf(summary.getText()),String.valueOf(platforms.getText()),cost.getText().toString(),comment.getText().toString()});
+                gamesDB.execSQL("INSERT OR IGNORE INTO user_games( id, name, summary, platforms, cost, score, comment) VALUES(?,?,?,?,?,?,?)", new String[] {id,String.valueOf(name.getText()),
+                        String.valueOf(summary.getText()),String.valueOf(platforms.getText()),cost.getText().toString(),score.getText().toString(),comment.getText().toString()});
                 Log.i("cost", cost.getText().toString());
                 Log.i("log_tag", "juego añadido");
+                finish();
             }
         });
-
-
-
-
     }
 
     @Override
@@ -158,7 +156,7 @@ public class GameDetail extends AppCompatActivity
         } else if (id == R.id.nav_games) {
             Intent intent = new Intent(this, GameListActivity.class);
             this.startActivity(intent);
-        } else if (id == R.id.nav_platforms) {
+        } else if (id == R.id.nav_user_games) {
             Intent intent = new Intent(this, UserGameListActivity.class);
             this.startActivity(intent);
         }

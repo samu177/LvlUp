@@ -1,6 +1,8 @@
 package com.example.samuelsoto.lvlup;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.support.design.widget.NavigationView;
@@ -10,21 +12,24 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.igdb.api_android_java.callback.OnSuccessCallback;
-import com.igdb.api_android_java.wrapper.IGDBWrapper;
-
-import com.android.volley.VolleyError;
-import com.igdb.api_android_java.wrapper.Parameters;
-import com.igdb.api_android_java.wrapper.Version;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class UserGameDetail extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private SQLiteDatabase gamesDB;
+    private String id;
+    private String name;
+    private String summary;
+    private String platforms;
+    private Float cost;
+    private Short score;
+    private String comment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,41 +48,71 @@ public class UserGameDetail extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         Intent mIntent = getIntent();
-        String id = mIntent.getStringExtra("ID");
+        id = mIntent.getStringExtra("ID");
 
         Log.d("ID:","La id es:" + id);
 
-        IGDBWrapper wrapper = new IGDBWrapper(this, "4661abeeaff372aa70b98588332b3b99", Version.STANDARD, false);
+        gamesDB = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
 
-        Parameters params = new Parameters()
-                .addIds(id)
-                .addFields("name,summary");
+        Cursor cursorGames =
+                gamesDB.rawQuery("SELECT * FROM user_games WHERE id = ?", new String[] {id});
 
-        wrapper.platforms(params, new OnSuccessCallback(){
+        while(cursorGames.moveToNext()) {
+            name = cursorGames.getString(1);
+            summary = cursorGames.getString(2);
+            platforms = cursorGames.getString(3);
+            cost = cursorGames.getFloat(4);
+            score = cursorGames.getShort(5);
+            comment = cursorGames.getString(6);
+        }
+        TextView id_tv = (TextView) findViewById(R.id.idGame);
+        TextView name_tv = (TextView) findViewById(R.id.gameName);
+        TextView summary_tv = (TextView) findViewById(R.id.gameSummary);
+        TextView platforms_tv = (TextView) findViewById(R.id.gamePlatforms);
+        EditText cost_et = (EditText) findViewById(R.id.editMoneySpent);
+        EditText score_et = (EditText) findViewById(R.id.editScore);
+        EditText comment_et = (EditText) findViewById(R.id.editComment);
+        Log.d("ID:","La id es asdf:" + name);
+
+        name_tv.setText(name);
+        summary_tv.setText(summary);
+        platforms_tv.setText(platforms);
+        cost_et.setText(String.valueOf(cost));
+        score_et.setText(String.valueOf(score));
+        comment_et.setText(comment);
+
+        Log.d(GameListActivity.class.getSimpleName(), String.valueOf(id));
+
+        cursorGames.close();
+
+
+        Button modGame = (Button) findViewById(R.id.modGame);
+        modGame.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(JSONArray result) {
+            public void onClick(View v) {
+                gamesDB  = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
 
-                JSONObject json_data = null;
-                try {
-                    json_data = result.getJSONObject(0);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                EditText cost = (EditText) findViewById(R.id.editMoneySpent);
+                EditText score = (EditText) findViewById(R.id.editScore);
+                EditText comment = (EditText) findViewById(R.id.editComment);
 
-                TextView name = (TextView) findViewById(R.id.platformName);
-                TextView summary = (TextView) findViewById(R.id.platformSummary);
 
-                try {
-                    name.setText(String.valueOf(json_data.getString("name")));
-                    summary.setText(String.valueOf(json_data.getString("summary")));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                gamesDB.execSQL("UPDATE user_games SET cost = ?, score = ?, comment = ? WHERE id = ?", new String[] {cost.getText().toString(),score.getText().toString(),comment.getText().toString(),id});
+                Log.i("cost", cost.getText().toString());
+                Log.i("log_tag", "juego modificado");
+                finish();
             }
+        });
 
+        Button deleteGame = (Button) findViewById(R.id.deleteGame);
+        deleteGame.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onError(VolleyError error) {
-                // Do something on error
+            public void onClick(View v) {
+                gamesDB  = openOrCreateDatabase("games.db", MODE_PRIVATE, null);
+
+                gamesDB.execSQL("DELETE FROM user_games WHERE id = ?", new String[] {id});
+                Log.i("log_tag", "juego añadido");
+                finish();
             }
         });
     }
@@ -105,7 +140,7 @@ public class UserGameDetail extends AppCompatActivity
         } else if (id == R.id.nav_games) {
             Intent intent = new Intent(this, GameListActivity.class);
             this.startActivity(intent);
-        } else if (id == R.id.nav_platforms) {
+        } else if (id == R.id.nav_user_games) {
             Intent intent = new Intent(this, UserGameListActivity.class);
             this.startActivity(intent);
         }
@@ -113,5 +148,11 @@ public class UserGameDetail extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        gamesDB.close();
     }
 }

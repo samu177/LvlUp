@@ -1,30 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".UserGameDetail"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_user_game_detail">
 
-    <TextView
-        android:id="@+id/platformName"
-        android:layout_width="137dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="Title"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".UserGameDetail"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        >
 
-    <TextView
-        android:id="@+id/platformSummary"
-        android:layout_width="346dp"
-        android:layout_height="111dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:text="Description"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/platformName" />
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/labelTitle"
+            android:layout_width="145dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/gameTitle"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/gameName"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelTitle" />
+
+        <TextView
+            android:id="@+id/labelSummary"
+            android:layout_width="145dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/gameDescription"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gameName" />
+
+        <TextView
+            android:id="@+id/gameSummary"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="8dp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelSummary" />
+
+        <TextView
+            android:id="@+id/labelPlatforms"
+            android:layout_width="145dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/gamePlatforms"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gameSummary" />
+
+        <TextView
+            android:id="@+id/gamePlatforms"
+            android:layout_width="310dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelPlatforms" />
+
+        <TextView
+            android:id="@+id/labelMoneySpent"
+            android:layout_width="111dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="28dp"
+            android:text="@string/gameMoney"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gamePlatforms" />
+
+        <EditText
+            android:id="@+id/editMoneySpent"
+            android:layout_width="73dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="36dp"
+            android:ems="10"
+            android:hint="0.0"
+            android:inputType="numberDecimal|numberSigned"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelMoneySpent" />
+
+        <TextView
+            android:id="@+id/labelScore"
+            android:layout_width="111dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="28dp"
+            android:text="@string/labelScore"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/labelMoneySpent"
+            app:layout_constraintTop_toBottomOf="@+id/gamePlatforms" />
+
+        <EditText
+            android:id="@+id/editScore"
+            android:layout_width="73dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="112dp"
+            android:ems="10"
+            android:hint="0"
+            android:inputType="number"
+            app:layout_constraintStart_toEndOf="@+id/editMoneySpent"
+            app:layout_constraintTop_toBottomOf="@+id/labelScore" />
+
+        <TextView
+            android:id="@+id/labelComment"
+            android:layout_width="111dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/gameComment"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editMoneySpent" />
+
+        <EditText
+            android:id="@+id/editComment"
+            android:layout_width="208dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:ems="10"
+            android:hint="@string/gameComment"
+            android:inputType="text"
+            app:layout_constraintStart_toEndOf="@+id/labelComment"
+            app:layout_constraintTop_toBottomOf="@+id/editScore" />
+
+        <Button
+            android:id="@+id/modGame"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/gameModGame"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editComment" />
+
+        <Button
+            android:id="@+id/deleteGame"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/gameDeleteGame"
+            app:layout_constraintStart_toEndOf="@+id/modGame"
+            app:layout_constraintTop_toBottomOf="@+id/editComment" />
+
+        <TextView
+            android:id="@+id/idGame"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            android:text="TextView"
+            app:layout_constraintStart_toEndOf="@+id/modGame"
+            app:layout_constraintTop_toBottomOf="@+id/editComment" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
